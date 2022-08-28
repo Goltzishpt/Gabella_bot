@@ -1,59 +1,44 @@
 import telebot
 from telebot import types
+import config
+from gabella_db import BotDB
 
-bot = telebot.TeleBot('2053487792:AAFTYMh-i1y55lJkNd1Y8VxSTFduMLSS4WE')
+
+BotDB = BotDB('gabella_db')
+bot = telebot.TeleBot(config.BOT_TOKEN)
 
 
 
-@bot.message_handler(commands=['start'])
-def start_handler(message):
+@bot.message_handler(commands='start')
+def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    mess = f'Добро пожаловать в Габелла-бот, {message.from_user.first_name} {message.from_user.last_name}'
+    mess = 'Welcome to Gabella-bot.'
     bot.send_message(message.chat.id, mess, parse_mode='html')
-    mess2 = f'Габелла поможет тебе что-то там сделать, правда пока хз что, бот недоработан'
-    bot.send_message(message.chat.id, mess2, parse_mode='html')
-    btn1 = types.KeyboardButton('Поехали')
+    btn1 = types.KeyboardButton('Go')
     markup.add(btn1)
-    bot.send_message(message.chat.id, text=('Начнем?'), parse_mode='html', reply_markup=markup)
+    bot.send_message(message.chat.id, text='Start now?', parse_mode='html', reply_markup=markup)
+    print(message.chat.id)
 
 
-@bot.message_handler(content_types=['text'])
-def func(message):
-    if message.text == 'Поехали':
+@bot.message_handler(commands='Go')
+def begin(message):
+    test = BotDB.user_exists(message.chat.id)
+    print(test)
+    if test == True:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton('Русский')
-        btn2 = types.KeyboardButton('Українська')
-        markup.add(btn1, btn2)
-        bot.send_message(message.chat.id, text=('Выбери язык'), parse_mode='html', reply_markup=markup)
-    elif message.text == 'Русский':
-        bot.send_message(message.chat.id, text=('Пока мы только начинаем и ты будешь одним из первых пользователей. Давай знакомиться'), parse_mode='html')
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton('Давай начнем')
+        mess = 'Ah, shit. Here we go again'
+        bot.send_message(message.chat.id, mess, parse_mode='html')
+        btn1 = types.KeyboardButton('Come back')
         markup.add(btn1)
-        bot.send_message(message.chat.id, text=('Сколько тебе лет?'), parse_mode='html', reply_markup=markup)
-    elif message.text == int:
-        print(message.text)
-        if type(message.text) == int:
-            x = message.text
-            print(x)
+        bot.send_message(message.chat.id, text='Would you like to continue?', parse_mode='html', reply_markup=markup)
+    else:
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton('Я девушка')
-        btn2 = types.KeyboardButton('Я парень')
-        markup.add(btn1, btn2)
-        bot.send_message(message.chat.id, text=('Теперь выберем пол:'), parse_mode='html', reply_markup=markup)
+        mess = 'Welcome to the world of love'
+        bot.send_message(message.chat.id, mess, parse_mode='html')
+        btn1 = types.KeyboardButton('Registation')
+        markup.add(btn1)
+        bot.send_message(message.chat.id, text='Would you like to join?', parse_mode='html', reply_markup=markup)
 
 
 bot.polling(none_stop=True)
 
-
-if __name__ == '__main__':
-    pass
-
-
-#        btn1 = types.KeyboardButton('1')
-#        btn2 = types.KeyboardButton('2')
-#        btn3 = types.KeyboardButton('3')
-#        btn4 = types.KeyboardButton('4')
-#        btn5 = types.KeyboardButton('5')
-#        markup.add(btn1, btn2, btn3, btn4, btn5)
-#        bot.send_message(message.chat.id, text=('1. \n2. \n3. \n4. \n5.'), parse_mode='html', reply_markup=markup)
