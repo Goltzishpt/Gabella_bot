@@ -1,2 +1,4 @@
 /.idea/
 /config.py
+/account.session
+/account.session-journal
