@@ -1,5 +1,7 @@
 import asyncio
 from pyrogram import Client, filters
+from bot import app
+
 
 
 async def message_handler(client_obj, message_obj):
@@ -10,13 +12,13 @@ async def message_handler(client_obj, message_obj):
     await client_obj.send_chat_active(message_obj.chat.id, 'typing')
 
 
-@Client.on_message(filters=filters.text)
+@app.on_message(filters=filters.text)
 async def text_handler(client, message):
     print(f'Користувач відправив текст: {message.text}')
     await message_handler(client, message)
 
 
-@Client.on_message(filters=filters.sticker)
+@app.on_message(filters=filters.sticker)
 async def sticker_handler(client, message):
     print(f'Користувач відпрвив текст: {message.text}')
     print('Відповідаємо користувачу...')
