@@ -1,17 +1,19 @@
-import time
-from pyrogram import Client, filters
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from pyrogram import Client
 import config
-from plugins import handlers
+
 
 api_id = config.API_ID
 api_hash = config.API_HASH
 group = 'gabellastest'
 channel = 'gabellachannel'
 
+plugins = dict(
+    root='plugins',
+    include=[
+        'handlers'
+    ]
+)
 
-app = Client('account', api_id, api_hash)
+Client('my_account', api_id, api_hash, plugins=plugins).run()
 
 
-
-app.run()
