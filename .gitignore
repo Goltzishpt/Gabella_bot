@@ -2,3 +2,4 @@
 /config.py
 /account.session
 /account.session-journal
+*/__pycache__
